@@ -4,18 +4,27 @@ const timerDisplay = document.getElementById("timerDisplay");
 let timer;
 let startTime;
 
-timerArea.addEventListener("mousedown", () => {
+function startTimer() {
   startTime = new Date();
   timer = setInterval(() => {
     const elapsed = ((new Date() - startTime) / 1000).toFixed(1);
     timerDisplay.textContent = elapsed;
   }, 100);
-});
+}
 
-timerArea.addEventListener("mouseup", () => {
+function stopTimer() {
   clearInterval(timer);
-});
+}
 
-timerArea.addEventListener("mouseleave", () => {
-  clearInterval(timer);
+// Eventi per desktop
+timerArea.addEventListener("mousedown", startTimer);
+timerArea.addEventListener("mouseup", stopTimer);
+timerArea.addEventListener("mouseleave", stopTimer);
+
+// Eventi per dispositivi mobili
+timerArea.addEventListener("touchstart", (event) => {
+  event.preventDefault();  // Previene comportamenti indesiderati, come lo scroll
+  startTimer();
 });
+timerArea.addEventListener("touchend", stopTimer);
+timerArea.addEventListener("touchcancel", stopTimer);
