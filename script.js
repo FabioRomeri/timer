@@ -23,8 +23,16 @@ timerArea.addEventListener("mouseleave", stopTimer);
 
 // Eventi per dispositivi mobili
 timerArea.addEventListener("touchstart", (event) => {
-  event.preventDefault(); // Previene lo scroll indesiderato
+  event.preventDefault(); // Previene il comportamento di default (scroll)
   startTimer();
-});
-timerArea.addEventListener("touchend", stopTimer);
-timerArea.addEventListener("touchcancel", stopTimer);
+}, { passive: false });
+
+timerArea.addEventListener("touchend", (event) => {
+  event.preventDefault();
+  stopTimer();
+}, { passive: false });
+
+timerArea.addEventListener("touchcancel", (event) => {
+  event.preventDefault();
+  stopTimer();
+}, { passive: false });
