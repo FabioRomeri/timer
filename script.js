@@ -8,7 +8,7 @@ function startTimer() {
   startTime = new Date();
   timer = setInterval(() => {
     const elapsed = ((new Date() - startTime) / 1000).toFixed(1);
-    timerDisplay.textContent = elapsed;
+    timerDisplay.textContent = `${elapsed} secondi`;
   }, 100);
 }
 
@@ -23,7 +23,7 @@ timerArea.addEventListener("mouseleave", stopTimer);
 
 // Eventi per dispositivi mobili
 timerArea.addEventListener("touchstart", (event) => {
-  event.preventDefault();  // Previene comportamenti indesiderati, come lo scroll
+  event.preventDefault(); // Previene lo scroll indesiderato
   startTimer();
 });
 timerArea.addEventListener("touchend", stopTimer);
