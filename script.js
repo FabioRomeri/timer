@@ -21,7 +21,7 @@ function switchToRed() {
     initialCountdown = Math.floor(getRandomTime(3000, 15000) / 1000); // Tempo casuale tra 3 e 15 secondi
     countdownDisplay.textContent = initialCountdown;
     remainingTime = initialCountdown;
-  }, getRandomTime(2000, 5000)); // Tempo casuale tra 2 e 5 secondi
+  }, getRandomTime(1000, 2000)); // Tempo casuale tra 2 e 5 secondi
 }
 
 // Gestisce il countdown quando il quadrato è premuto
