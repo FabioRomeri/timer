@@ -2,8 +2,8 @@ const square = document.getElementById("square");
 const countdownDisplay = document.getElementById("countdown");
 
 let currentState = "green"; // Stato iniziale
-let timeout; // Timer per i cambi di stato
-let countdownTimer; // Timer per il countdown
+let timeout; // Timer per cambio di stato
+let countdownTimer; // Timer per aggiornare il countdown
 let initialCountdown; // Valore iniziale del countdown
 let remainingTime; // Tempo rimanente del countdown
 let isPressed = false; // Controllo se il quadrato è premuto
@@ -26,7 +26,7 @@ function switchToRed() {
 
 // Gestisce il countdown quando il quadrato è premuto
 function startCountdown() {
-  if (currentState === "red") {
+  if (currentState === "red" && !isPressed) {
     isPressed = true; // Segna che il quadrato è premuto
     countdownTimer = setInterval(() => {
       if (remainingTime > 0) {
@@ -36,6 +36,7 @@ function startCountdown() {
         clearInterval(countdownTimer);
         square.style.backgroundColor = "green";
         currentState = "green";
+        isPressed = false; // Resetta lo stato premuto
         resetToRed();
       }
     }, 1000);
@@ -77,6 +78,7 @@ square.addEventListener("touchcancel", (event) => {
 
 // Inizializza il ciclo
 switchToRed();
+
 
 
 
