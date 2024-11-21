@@ -1,38 +1,42 @@
-const timerArea = document.getElementById("timerArea");
-const timerDisplay = document.getElementById("timerDisplay");
+const square = document.getElementById("square");
 
-let timer;
-let startTime;
+let currentState = "green"; // Stato iniziale
+let timeout; // Per gestire i cambi di stato
 
-function startTimer() {
-  startTime = new Date();
-  timer = setInterval(() => {
-    const elapsed = ((new Date() - startTime) / 1000).toFixed(1);
-    timerDisplay.textContent = `${elapsed} secondi`;
-  }, 100);
+// Genera un tempo casuale tra min e max (in millisecondi)
+function getRandomTime(min, max) {
+  return Math.random() * (max - min) + min;
 }
 
-function stopTimer() {
-  clearInterval(timer);
+// Cambia stato a rosso dopo un tempo casuale
+function switchToRed() {
+  timeout = setTimeout(() => {
+    square.style.backgroundColor = "red";
+    currentState = "red";
+    waitForPress();
+  }, getRandomTime(2000, 5000)); // Tempo casuale tra 2 e 5 secondi
 }
 
-// Eventi per desktop
-timerArea.addEventListener("mousedown", startTimer);
-timerArea.addEventListener("mouseup", stopTimer);
-timerArea.addEventListener("mouseleave", stopTimer);
+// Aspetta che l'utente prema il quadrato
+function waitForPress() {
+  square.addEventListener("click", handlePress, { once: true });
+}
 
-// Eventi per dispositivi mobili
-timerArea.addEventListener("touchstart", (event) => {
-  event.preventDefault(); // Previene il comportamento di default (scroll)
-  startTimer();
-}, { passive: false });
+// Gestisce il click quando il quadrato è rosso
+function handlePress() {
+  if (currentState === "red") {
+    currentState = "green";
+    square.style.backgroundColor = "green";
+    resetToRed();
+  }
+}
 
-timerArea.addEventListener("touchend", (event) => {
-  event.preventDefault();
-  stopTimer();
-}, { passive: false });
+// Cambia stato a verde dopo un tempo casuale (dopo il click)
+function resetToRed() {
+  clearTimeout(timeout);
+  timeout = setTimeout(switchToRed, getRandomTime(2000, 10000)); // Tempo casuale tra 2 e 10 secondi
+}
 
-timerArea.addEventListener("touchcancel", (event) => {
-  event.preventDefault();
-  stopTimer();
-}, { passive: false });
+// Inizializza il ciclo
+switchToRed();
+
