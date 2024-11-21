@@ -56,7 +56,7 @@ function resetCountdown() {
 // Cambia stato a verde dopo un tempo casuale (dopo il completamento del countdown)
 function resetToRed() {
   clearTimeout(timeout);
-  timeout = setTimeout(switchToRed, getRandomTime(2000, 10000)); // Tempo casuale tra 2 e 10 secondi
+  timeout = setTimeout(switchToRed, getRandomTime(2000, 3000)); // Tempo casuale tra 2 e 10 secondi
 }
 
 // Eventi mouse e touch per gestire la pressione e il rilascio
