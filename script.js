@@ -1,16 +1,32 @@
 const square = document.getElementById("square");
 const countdownDisplay = document.getElementById("countdown");
+const delayDisplay = document.getElementById("delay");
+const penaltyDisplay = document.getElementById("penalty");
 
 let currentState = "green"; // Stato iniziale
 let timeout; // Timer per cambio di stato
 let countdownTimer; // Timer per aggiornare il countdown
+let pressDelayTimer;
+let delay = 0;
 let initialCountdown; // Valore iniziale del countdown
+let updatedCountdown;
 let remainingTime; // Tempo rimanente del countdown
 let isPressed = false; // Controllo se il quadrato è premuto
+let isUpdated = false;
 
-// Genera un tempo casuale tra min e max (in millisecondi)
 function getRandomTime(min, max) {
   return Math.random() * (max - min) + min;
+}
+
+function updateCountdown(){
+  if(!isUpdated){
+    updatedCountdown = initialCountdown + delay;
+    isUpdated = true;
+    penaltyDisplay.textContent = Math.round(delay*10)/10;
+    timeout = setTimeout(() => {
+      penaltyDisplay.textContent = "";
+    },1500);
+  }
 }
 
 // Cambia stato a rosso dopo un tempo casuale
@@ -18,28 +34,49 @@ function switchToRed() {
   timeout = setTimeout(() => {
     square.style.backgroundColor = "red";
     currentState = "red";
-    initialCountdown = Math.floor(getRandomTime(3000, 15000) / 1000); // Tempo casuale tra 3 e 15 secondi
-    countdownDisplay.textContent = initialCountdown;
+    initialCountdown = Math.floor(getRandomTime(3000, 11000) / 1000);
+    countdownDisplay.textContent = Math.round(initialCountdown*10)/10;;
     remainingTime = initialCountdown;
-  }, getRandomTime(1000, 2000)); // Tempo casuale tra 2 e 5 secondi
+    waitForTouch();
+  }, getRandomTime(1000, 4000));
+}
+
+function waitForTouch() {
+  if(!isPressed){
+    pressDelayTimer = setInterval(() => {
+      delay += 0.1;
+      delayDisplay.textContent = Math.round(delay*10)/10;
+    }, 100);
+  }
+}
+
+function clearDelay() {
+  updateCountdown();
+  delayDisplay.textContent = "";
+  clearInterval(pressDelayTimer);
 }
 
 // Gestisce il countdown quando il quadrato è premuto
 function startCountdown() {
   if (currentState === "red" && !isPressed) {
-    isPressed = true; // Segna che il quadrato è premuto
+    clearDelay();
+    isPressed = true;
+    remainingTime = updatedCountdown;
+    countdownDisplay.textContent = Math.round(remainingTime*10)/10;
     countdownTimer = setInterval(() => {
       if (remainingTime > 0) {
-        remainingTime -= 1;
-        countdownDisplay.textContent = remainingTime;
+        remainingTime -= 0.1;
+        countdownDisplay.textContent = Math.round(remainingTime*10)/10;
       } else {
         clearInterval(countdownTimer);
         square.style.backgroundColor = "green";
+        delay = 0;
+        delayDisplay.textContent = "0";
         currentState = "green";
         isPressed = false; // Resetta lo stato premuto
         resetToRed();
       }
-    }, 1000);
+    }, 100);
   }
 }
 
@@ -48,19 +85,19 @@ function resetCountdown() {
   if (isPressed) {
     isPressed = false; // Segna che il quadrato è stato rilasciato
     clearInterval(countdownTimer); // Ferma il countdown
-    remainingTime = initialCountdown; // Ripristina il valore iniziale
-    countdownDisplay.textContent = remainingTime; // Aggiorna il display
+    remainingTime = updatedCountdown; // Ripristina il valore iniziale
+    countdownDisplay.textContent = Math.round(remainingTime*10)/10;; // Aggiorna il display
   }
 }
 
-// Cambia stato a verde dopo un tempo casuale (dopo il completamento del countdown)
 function resetToRed() {
   clearTimeout(timeout);
-  timeout = setTimeout(switchToRed, getRandomTime(2000, 3000)); // Tempo casuale tra 2 e 10 secondi
+  switchToRed();
+  isUpdated = false;
 }
 
 // Eventi mouse e touch per gestire la pressione e il rilascio
-square.addEventListener("mousedown", startCountdown);
+square.addEventListener("mousedown", startCountdown, clearDelay);
 square.addEventListener("mouseup", resetCountdown);
 square.addEventListener("mouseleave", resetCountdown);
 square.addEventListener("touchstart", (event) => {

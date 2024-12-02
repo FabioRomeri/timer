@@ -16,6 +16,20 @@ body {
   color: #333;
 }
 
+#delay {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ff6060;
+}
+
+#penalty{
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ff6060; 
+}
+
 #square {
   width: 200px;
   height: 200px;
