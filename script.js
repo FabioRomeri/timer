@@ -24,7 +24,7 @@ function updateCountdown(){
     isUpdated = true;
     penaltyDisplay.textContent = Math.round(delay*10)/10;
     timeout = setTimeout(() => {
-      penaltyDisplay.textContent = "";
+      penaltyDisplay.textContent = "-";
     },1500);
   }
 }
@@ -52,7 +52,7 @@ function waitForTouch() {
 
 function clearDelay() {
   updateCountdown();
-  delayDisplay.textContent = "";
+  delayDisplay.textContent = "-";
   clearInterval(pressDelayTimer);
 }
 

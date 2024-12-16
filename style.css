@@ -5,7 +5,7 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
-  background-color: #f0f0f0;
+  background-color: #464646;
   font-family: Arial, sans-serif;
 }
 
@@ -13,7 +13,7 @@ body {
   font-size: 48px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
+  color: #ffffff;
 }
 
 #delay {
@@ -37,4 +37,12 @@ body {
   border-radius: 10px;
   cursor: pointer;
   user-select: none;
+}
+
+#ball {
+  margin-bottom: 600px;
+}
+
+#circle {
+  margin-bottom: 600px;
 }
