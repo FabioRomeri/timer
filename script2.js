@@ -90,4 +90,9 @@ function resetCountdown() {
 
 // Inizializza gli eventi
 square.addEventListener("click", handleClick);
+square.addEventListener("touchstart", (event) => {
+  event.preventDefault(); // Previene il comportamento di default
+  handleClick();
+});
+
 handleBall();
